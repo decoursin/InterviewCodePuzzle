@@ -1,6 +1,6 @@
 # Build a Web API
 
-## What the Merchant h
+## What the Merchant Has To say
 A Runa customer, AwesomeShoes.com, needs a new report. They've given us their session data, which is a TSV formatted file. Runa also has data stored in a CSV formatted file. We need a report which compares the data in the 2 files, and builds a report which shows the discrepancies.
 
 ## Requirements
