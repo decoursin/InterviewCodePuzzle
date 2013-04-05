@@ -19,7 +19,7 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
 ## Inputs
   * Files located in the resources folder
     * [Merchant Data File](https://github.com/runa-dev/code-puzzle/blob/master/resources/merchant_data.psv) is the data from AwesomeShoes.com          
-    * [Runa Data File](https://github.com/runa-dev/code-puzzle/blob/master/resources/runa_data.csv)runa_data.csv is the data stored in Runa's database
+    * [Runa Data File](https://github.com/runa-dev/code-puzzle/blob/master/resources/runa_data.csv) is the data stored in Runa's database
 
 ## Outputs
 Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt)
