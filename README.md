@@ -11,6 +11,7 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
   * `session-type-desc`         - sort by `session-type` in descending order
   * `order-id-asc`              - sort by `order-id` in ascending order
   * `unit-price-dollars-asc`    - sort by `unit-price-dollars` in ascending order
+[This](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt) file has the above 3 use cases.
 
 ## Caveats:
 * DO NOT use a library to parse any file. Use only clojure.core functions(You CANNOT use libraries like clojure.string, clojure.set to parse the file, but you CAN use java methods to parse numbers etc). Email punit@runa.com if you're not clear about this.
