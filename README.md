@@ -1,10 +1,10 @@
 # Build a Web API
 
 ## 
-A Runa customer, AwesomeShoes.com, needs a new report. They've given us their session data, which is a pipe delimited formatted file. Runa also has data stored in a CSV formatted file. We need a report which compares the data in the 2 files, and builds a report which shows the discrepancies.
+A Runa customer, AwesomeShoes.com, needs a new report. They've given us their session data, which is a pipe delimited formatted file. Runa also has data stored in a CSV formatted file.  The report should compare the data in the 2 files, and builds a report which shows the discrepancies.
 
 ## Requirements
-* You need to create a web service, which has a single route, which generates a report as described in the `expected-api-responses.txt` file.
+* You need to create a web service, which has a single route, which generates a report as described in the [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt).
 
 ## API route:
 * /runatic/report - route which returns the report data. It takes a parameter `order_by`, which can be any of these 3 values
@@ -23,3 +23,7 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
 
 ## Outputs
 Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt)
+
+
+Fork the project, and send us an email once you're done.
+Have fun! :)
