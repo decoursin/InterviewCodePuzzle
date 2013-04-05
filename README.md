@@ -14,7 +14,7 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
 [This](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.json) file has the above 3 use cases.
 
 ## Caveats:
-* DO NOT use a library to parse any file. Use only clojure.core functions(You CANNOT use libraries like clojure.string, clojure.set to parse the file, but you CAN use java methods to parse numbers etc). Email punit@runa.com if you're not clear about this.
+* DO NOT use a library to parse any file. Use only clojure.core functions(You CANNOT use libraries like clojure.string, clojure.set to parse the file, but you CAN use java methods to parse numbers etc). For any of the non-parsing parts of the application you are free to use any libraries you want (from Clojars or Maven Central, etc). Email punit@runa.com if you're not clear about this.
 * Notice the order of the columns in the Runa data file, and the Merchant data file are different, and the prices in the Runa data file are in cents, while the prices in the Merchant file are in dollars.
 
 ## Inputs
