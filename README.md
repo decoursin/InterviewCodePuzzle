@@ -13,13 +13,13 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
   * `unit-price-dollars-asc`    - sort by `unit-price-dollars` in ascending order
 
 ## Caveats:
-* DO NOT use a library to parse any file. Use only clojure.core functions(You cant use libraries like clojure.string, clojure.set to parse the file, but you can use java methods to parse numbers etc). Email punit@runa.com if you're not clear about this.
+* DO NOT use a library to parse any file. Use only clojure.core functions(You CANNOT use libraries like clojure.string, clojure.set to parse the file, but you CAN use java methods to parse numbers etc). Email punit@runa.com if you're not clear about this.
 * Notice the order of the columns in the Runa data file, and the Merchant data file are different, and the prices in the Runa Data file are in cents, while the prices in the Merchant file are in dollars.
 
 ## Inputs
   * Files located in the resources folder
-    * merchant_data.tsv is the data from AwesomeShoes.com          
-    * runa_data.csv is the data stored in Runa's database
+    * [Merchant Data File](https://github.com/runa-dev/code-puzzle/blob/master/resources/merchant_data.psv) is the data from AwesomeShoes.com          
+    * [Runa Data File](https://github.com/runa-dev/code-puzzle/blob/master/resources/runa_data.csv)runa_data.csv is the data stored in Runa's database
 
 ## Outputs
-Look at this file - `expected-api-responses.txt`
+Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt)
