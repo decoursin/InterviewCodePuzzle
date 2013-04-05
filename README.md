@@ -25,5 +25,5 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
 Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt)
 
 
-Fork the project, and send us an email once you're done.
+Fork the project, and send an email to runa-dev@runa.com once you're done.
 Have fun! :)
