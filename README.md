@@ -4,18 +4,18 @@
 A Runa customer, AwesomeShoes.com, needs a new report. They've given us their session data, which is a pipe delimited formatted file. Runa also has data stored in a CSV formatted file.  The report should compare the data in the 2 files, and builds a report which shows the discrepancies.
 
 ## Requirements
-* You need to create a web service, which has a single route, which generates a report as described in the [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt).
+* You need to create a web service, which has a single route, which generates a report as described in the [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.json).
 
 ## API route:
 * /runatic/report - route which returns the report data. It takes a parameter `order_by`, which can be any of these 3 values
   * `session-type-desc`         - sort by `session-type` in descending order
   * `order-id-asc`              - sort by `order-id` in ascending order
   * `unit-price-dollars-asc`    - sort by `unit-price-dollars` in ascending order<br />
-[This](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt) file has the above 3 use cases.
+[This](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.json) file has the above 3 use cases.
 
 ## Caveats:
 * DO NOT use a library to parse any file. Use only clojure.core functions(You CANNOT use libraries like clojure.string, clojure.set to parse the file, but you CAN use java methods to parse numbers etc). Email punit@runa.com if you're not clear about this.
-* Notice the order of the columns in the Runa data file, and the Merchant data file are different, and the prices in the Runa Data file are in cents, while the prices in the Merchant file are in dollars.
+* Notice the order of the columns in the Runa data file, and the Merchant data file are different, and the prices in the Runa data file are in cents, while the prices in the Merchant file are in dollars.
 
 ## Inputs
   * Files located in the resources folder
@@ -23,7 +23,7 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
     * [Runa Data File](https://github.com/runa-dev/code-puzzle/blob/master/resources/runa_data.csv) is the data stored in Runa's database
 
 ## Outputs
-Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt)
+Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.json)
 
 
 Fork the project, and send an email to runa-dev@runa.com once you're done.<br />
