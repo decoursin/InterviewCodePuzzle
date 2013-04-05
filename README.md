@@ -10,7 +10,7 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
 * /runatic/report - route which returns the report data. It takes a parameter `order_by`, which can be any of these 3 values
   * `session-type-desc`         - sort by `session-type` in descending order
   * `order-id-asc`              - sort by `order-id` in ascending order
-  * `unit-price-dollars-asc`    - sort by `unit-price-dollars` in ascending order
+  * `unit-price-dollars-asc`    - sort by `unit-price-dollars` in ascending order<br />
 [This](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt) file has the above 3 use cases.
 
 ## Caveats:
@@ -26,5 +26,5 @@ A Runa customer, AwesomeShoes.com, needs a new report. They've given us their se
 Look at this file - [expected api response](https://github.com/runa-dev/code-puzzle/blob/master/expected-api-responses.txt)
 
 
-Fork the project, and send an email to runa-dev@runa.com once you're done.
+Fork the project, and send an email to runa-dev@runa.com once you're done.<br />
 Have fun! :)
