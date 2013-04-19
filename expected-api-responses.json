@@ -1,3 +1,5 @@
+NOTE: responses should match using JSON equality, not String equality
+
 WHEN I GET /runatic/report?order_by=session-type-desc with JSON content-type, 
 THEN response should have this body:
  
