@@ -5,7 +5,9 @@
                  [net.cgrand/moustache "1.2.0-alpha2"]
                  [compojure "1.1.6"]
                  [ring-server "0.3.1"]
-                 [incanter "1.5.6"]]
+                 [camel-snake-kebab "0.3.2"]
+                 [incanter "1.9.0"]
+                 [tranchis/core.matrix "0.34.1"]]
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler code-puzzle.handler/my-app
          :init code-puzzle.handler/init
