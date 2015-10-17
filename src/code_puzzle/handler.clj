@@ -52,20 +52,29 @@
   (let [data (-> (parse filename)
                  (convert-cents-to-dollars cents-regex)
                  (rename-cols cents-regex dollars-string)
-                 (rename-cols ->kebab-case-string)
-                 (rename-cols s/lower-case))]
+                 (rename-cols ->kebab-case-string))]
+                 ;; (rename-cols s/lower-case))]
        ;summary
        ;ordered
 
     data))
 
-;; TODO: transpose instead?
-(defn sum-column
+(defn sum-columns
+  "reduce integer column-names to the sum
+   of there columns"
   [data column-names]
-  (let [data (I/sel data :cols column-names)]
-    (apply assoc {} (flatten (for [column-name column-names
-                                    :let [column (get (I/to-map data) column-name)]]
-                                [column-name (reduce + column)])))))
+  (defn sum-column
+    [coll]
+    (reduce + coll))
+  (let [data (ds/select-columns data column-names)]
+    (apply assoc {} (flatten (for [[key column] (I/to-map data)]
+      [(get column-names key) (sum-column column)])))))
+    ;; (map (partial get-column (I/to-matrix data) 
+    ;; (println "dat: " (I/to-map data))
+    ;; (apply assoc {} (flatten (for [column-name column-names
+    ;;                                :let [column (get (I/to-map data) column-name)]]
+    ;;                            (do (println "column-name: " column-name "col: " column)
+    ;;                            [column-name (reduce + column)]))))))
   ;; (println "to matrxi: " (I/to-matrix data))
   ;;   (for [column (I/to-matrix data)]
   ;;     ;; (reduce + column))))
@@ -84,14 +93,14 @@
 
 (defn make-orders
   [csv psv]
-    (defn helper
-        [data]
-        (let [rows (I/to-vect data)
-                column-names (ds/column-names data)]
-            (for [row rows]
-            (apply assoc {} (interleave column-names row)))))
+  (defn helper
+    [data]
+    (let [rows (I/to-vect data)
+          column-names (ds/column-names data)]
+      (for [row rows]
+        (apply assoc {} (interleave column-names row)))))
     ;; (println (helper csv)))
-    (interleave (helper csv) (helper psv)))
+  (interleave (helper csv) (helper psv)))
     ;; (partition-into-hashmap (I/ncol csv) (interleave (helper csv) (helper psv))))
     ;; (partition-into-hashmap (interleave (helper csv) (helper psv))))
 
@@ -100,9 +109,10 @@
 (def ^:const dollars-regex #"dollars")
 (let [csv (controller csv-filename)
       psv (controller psv-filename)
-      summary-columns (filter-columns-names-by-regex (ds/column-names csv) dollars-regex)
-      csv-summary (sum-column csv summary-columns)
-      psv-summary (sum-column psv summary-columns)]
+      summary-columns (filter-columns-names-by-regex (ds/column-names csv) dollars-regex)]
+  (sum-columns csv summary-columns))
+      ;; csv-summary (sum-columns csv summary-columns)]
+  ;; csv-summary)
       ;; orders (interleave (make-orders csv) (make-orders psv))]
       ;; orders (make-orders csv psv)]
       ;; orders (partition-into-hashmap 4 (interleave
@@ -119,6 +129,7 @@
   ;; (println "merch: " psv)
   ;; (println "sum: " orders)
   ;; (clojure.pprint/pprint orders)
-  (println "sum cols: " summary-columns))
+  ;; (println "sum cols: " summary-columns))
 
+;; (controller psv-filename)
 ;1) perform 
