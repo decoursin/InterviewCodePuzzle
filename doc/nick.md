@@ -4,4 +4,6 @@ I tried to make this as real-life as possible. In this way, I think it would sti
 abbreviations
 cns = column-names
 re = regex
-other abbreviations are pretty typical clojure style
+merch = the dataset created from the merchant-data
+runa = the dataset created from the runa-data
+other abbreviations are pretty typical clojure style or somewhat intuitive

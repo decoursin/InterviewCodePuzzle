@@ -17,22 +17,18 @@
   [filename]
   (let [ch (first (get-extension filename))]
     (cond
-      (= ch \p) "|"
+      (= ch \p) "\\|"
       (= ch \c) ","
       :else (throw (Exception. "filetype is not valid, expects .csv or .psv")))))
 
-(defn- string-to-regex
-  [string]
-  (java.util.regex.Pattern/compile string java.util.regex.Pattern/LITERAL))
-
-
-(defn read-in-data
-  "Read the file into a dataset"
+;TODO: Test if slurp works instead
+; then, try to decouple opening the file from making the dataset
+(defn make-dataset
+  "Open the file and make into a dataset"
   [filename]
   (with-open [rdr (reader filename)]
-    (let [delim (string-to-regex (get-delimeter filename))
+    (let [delim (re-pattern (get-delimeter filename))
           cns (split (.readLine rdr) delim)]
-      (println "delim: " delim "cns: " cns)
       (I/dataset cns
                (doall (for [line (line-seq rdr)]
                         (split line delim)))))))

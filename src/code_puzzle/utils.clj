@@ -53,8 +53,20 @@
   [size coll]
   (map #(apply hash-map %) (partition size coll)))
 
+(defn round2
+  "Round a double to the given precision (number of significant digits)"
+  [precision d]
+  (let [factor (Math/pow 10 precision)]
+    (/ (Math/round (* d factor)) factor)))
+
 (defn to-float
   "Parses a string into a float"
   [s]
   (when (not (nil? s))
     (Float/parseFloat s)))
+
+(defn to-integer
+  "Parses a string into a float"
+  [s]
+  (when (not (nil? s))
+    (Integer/parseInt s)))
