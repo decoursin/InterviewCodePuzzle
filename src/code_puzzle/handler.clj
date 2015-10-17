@@ -69,23 +69,6 @@
   (let [data (ds/select-columns data column-names)]
     (apply assoc {} (flatten (for [[key column] (I/to-map data)]
       [(get column-names key) (sum-column column)])))))
-    ;; (map (partial get-column (I/to-matrix data) 
-    ;; (println "dat: " (I/to-map data))
-    ;; (apply assoc {} (flatten (for [column-name column-names
-    ;;                                :let [column (get (I/to-map data) column-name)]]
-    ;;                            (do (println "column-name: " column-name "col: " column)
-    ;;                            [column-name (reduce + column)]))))))
-  ;; (println "to matrxi: " (I/to-matrix data))
-  ;;   (for [column (I/to-matrix data)]
-  ;;     ;; (reduce + column))))
-  ;;     (do (println "col: " column)
-  ;;       (reduce + column)))))
-
-;; (defn make-orders
-;;   [data]
-;;   (apply merge
-;;          (for [[key values] (seq (I/to-map data))]
-;;            (interleave (cycle [key]) values))))
 
 (defn partition-into-hashmap
   [size coll]
@@ -93,43 +76,25 @@
 
 (defn make-orders
   [csv psv]
-  (defn helper
+  (defn make-order
     [data]
     (let [rows (I/to-vect data)
           column-names (ds/column-names data)]
       (for [row rows]
         (apply assoc {} (interleave column-names row)))))
-    ;; (println (helper csv)))
-  (interleave (helper csv) (helper psv)))
+  (partition-into-hashmap 4 (interleave
+                             (cycle [:runa-data :merchant-data])
+                             (interleave (make-order csv) (make-order psv)))))
     ;; (partition-into-hashmap (I/ncol csv) (interleave (helper csv) (helper psv))))
     ;; (partition-into-hashmap (interleave (helper csv) (helper psv))))
 
-;;   (I/to-map data)))
-;;   {:runa-data csv, :merchant-data psv})
-(def ^:const dollars-regex #"dollars")
-(let [csv (controller csv-filename)
-      psv (controller psv-filename)
-      summary-columns (filter-columns-names-by-regex (ds/column-names csv) dollars-regex)]
-  (sum-columns csv summary-columns))
-      ;; csv-summary (sum-columns csv summary-columns)]
-  ;; csv-summary)
-      ;; orders (interleave (make-orders csv) (make-orders psv))]
-      ;; orders (make-orders csv psv)]
-      ;; orders (partition-into-hashmap 4 (interleave
-      ;;                         (cycle [:runa-data :merchant-data])
-      ;;                         (make-orders csv psv)))]
-      ;; orders (merge {:runa-data csv :merchant-data psv})
-      ;; m (interleave {}(make-orders csv) (make-orders psv))]
-      ;; m {:summaries {:runa-summary csv-summary
-      ;;                 :merchant-summary psv-summary}
-      ;;     :order (interleave (make-orders csv) (make-orders psv))}]
-      ;; m [{:runa-data csv :merchant-data psv}]
-      ;; m (merge {summ})]
-  ;; (println "runa: " csv)
-  ;; (println "merch: " psv)
-  ;; (println "sum: " orders)
-  ;; (clojure.pprint/pprint orders)
-  ;; (println "sum cols: " summary-columns))
-
-;; (controller psv-filename)
-;1) perform 
+(let [runa (controller csv-filename)
+      merch (controller psv-filename)
+      summary-columns (filter-columns-names-by-regex (ds/column-names runa) dollars-regex)
+      runa-summary (sum-columns runa summary-columns)
+      merch-summary (sum-columns merch summary-columns)
+      orders (make-orders runa merch)
+      m {:summaries {:runa-summary runa-summary
+                     :merchant-summar merch-summary}
+         :orders orders}]
+  m)
