@@ -1,2 +1,7 @@
 
 I tried to make this as real-life as possible. In this way, I think it would still work if rename columns (restricted to certain name conventions), add columns, add rows, etc. I didn't abstract-out the files themselves, so it wouldn't work to add more csv files, because judging by the data in didn't seem like that would happen.
+
+abbreviations
+cns = column-names
+re = regex
+other abbreviations are pretty typical clojure style
