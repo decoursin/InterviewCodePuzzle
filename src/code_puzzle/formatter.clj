@@ -2,6 +2,7 @@
   (:require [clojure.string :as s]
             [code-puzzle.utils :refer :all]
             [clojure.core.matrix.dataset :as ds]
+            [clojure.test :refer [function?]]
             [incanter.core :as I]
             [camel-snake-kebab.core :refer [->kebab-case-string]];
             :reload-all))
@@ -38,15 +39,29 @@
   (I/dataset cns
              (map (apply juxt (map (fn [cn] #(get % cn)) cns)) cns-cell-map)))
 
-(defn- sort-rows
-  "Incanter API."
-  [data [cn order]]
-  (println "CN to sort: " cn)
+(defmulti sort-rows
+  (fn [data [cn order]]
+    (cond
+      (= order :asc) :asc
+      (= order :desc) :desc
+      (function? order) :function
+      :else (throw (Exception. "incorrect arg type for arg order")))))
+
+(defmethod sort-rows :asc
+  [data [cn _]]
+  (sort-rows data [cn compare]))
+
+(defmethod sort-rows :desc
+  [data [cn _]]
+  (let [opp-compare (comp #(* -1 %) compare)]
+    (sort-rows data [cn opp-compare])))
+
+(defmethod sort-rows :function
+  [data [cn f]]
   (let [cns-cell-map (build-cns-cell-map data)
-        sorted-cns-cell-map (sort-by #(get % cn) cns-cell-map)]
+        sorted-cns-cell-map (sort-by #(get % cn) f cns-cell-map)]
     (println "sorted-cns-cell-map: " sorted-cns-cell-map)
     (cns-cell-map-to-dataset sorted-cns-cell-map (ds/column-names data))))
-    ;; (clojure.pprint/pprint (sort-by #(get % cn) cns-cell-map))))
 
 (defn format-dataset
   [data sort-order]
@@ -57,6 +72,7 @@
                  (rename-columns cents-regex dollars-string)
                  (rename-columns ->kebab-case-string))]
     (let [not-cents-or-dollars-cns (filter-column-names data #(if (not (re-find cents-or-dollars-regex %)) %))]
+      (println "format-dataset: " data "sort-rder: " sort-order)
       (-> data
           (update-columns not-cents-or-dollars-cns s/lower-case)
           (sort-rows sort-order)))))
