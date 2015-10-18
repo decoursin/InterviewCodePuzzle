@@ -1,6 +1,6 @@
 (ns code-puzzle.utils
   (:require [clojure.core.matrix.dataset :as ds]
-            [clojure.core.matrix.impl.dataset]))
+            [incanter.core :as I]))
 
 ;;TODO: (map-reduce data column-names & fs)
 ;;TODO: return map with :column-name value for each row then value
@@ -46,6 +46,16 @@
    (if (= (type cns-or-regex) java.util.regex.Pattern)
      (update-columns data (filter-column-names data cns-or-regex) f)
      (reduce #(ds/update-column %1 %2 f) data cns-or-regex))))
+
+(defn build-cns-cell-map
+  "For each cell of each column, produce a hashmap {column-name cell}.
+   Voila, the name of the function reads, build {column-names cell} hashmap.
+   In my opinion, this should really be in the Incanter api"
+  [data]
+  (let [rows (I/to-vect data)
+        cns (ds/column-names data)]
+    (for [row rows]
+      (apply assoc {} (interleave cns row)))))
 
 (defn partition-into-hashmap
   "Partitions a collection ordered k,v,k,v... by size into a hashmap.

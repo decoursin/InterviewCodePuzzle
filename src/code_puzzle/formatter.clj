@@ -1,9 +1,11 @@
 (ns code-puzzle.formatter
   (:require [clojure.string :as s]
             [code-puzzle.utils :refer :all]
-            [clojure.core.matrix.dataset :as ds];
+            [clojure.core.matrix.dataset :as ds]
+            [incanter.core :as I]
             [camel-snake-kebab.core :refer [->kebab-case-string]];
             :reload-all))
+;TODO: replace data with ds?
 
 (def ^:const cents-or-dollars-regex #"(?i)cents|dollars")
 (def ^:const cents-regex #"(?i)cents")
@@ -30,13 +32,31 @@
    (let [m (columns-to-replace data from to)]
      (ds/rename-columns data m))))
 
+(defn- cns-cell-map-to-dataset
+  "Incanter API."
+  [cns-cell-map cns]
+  (I/dataset cns
+             (map (apply juxt (map (fn [cn] #(get % cn)) cns)) cns-cell-map)))
+
+(defn- sort-rows
+  "Incanter API."
+  [data [cn order]]
+  (println "CN to sort: " cn)
+  (let [cns-cell-map (build-cns-cell-map data)
+        sorted-cns-cell-map (sort-by #(get % cn) cns-cell-map)]
+    (println "sorted-cns-cell-map: " sorted-cns-cell-map)
+    (cns-cell-map-to-dataset sorted-cns-cell-map (ds/column-names data))))
+    ;; (clojure.pprint/pprint (sort-by #(get % cn) cns-cell-map))))
+
 (defn format-dataset
-  [data]
+  [data sort-order]
   (let [data (-> data
                  (rename-columns s/lower-case)
                  (update-columns cents-or-dollars-regex to-float)
                  (update-columns cents-regex #(/ % 100))
                  (rename-columns cents-regex dollars-string)
                  (rename-columns ->kebab-case-string))]
-    (let [not-dollars-cns (filter-column-names data #(if (not (re-find cents-or-dollars-regex %)) %))]
-      (update-columns data not-dollars-cns s/lower-case))))
+    (let [not-cents-or-dollars-cns (filter-column-names data #(if (not (re-find cents-or-dollars-regex %)) %))]
+      (-> data
+          (update-columns not-cents-or-dollars-cns s/lower-case)
+          (sort-rows sort-order)))))

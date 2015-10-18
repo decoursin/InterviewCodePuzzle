@@ -2,7 +2,8 @@
   :description "Solution to Runa Code Puzzle"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [ring "1.4.0"]
-                 [net.cgrand/moustache "1.2.0-alpha2"]
+                 [compojure "1.4.0"]
+                 [net.cgrand/moustache "1.2.0-alpha2"]; TODO: remove
                  [ring-server "0.3.1"]
                  [camel-snake-kebab "0.3.2"]
                  [org.clojure/data.json "0.2.6"]
