@@ -26,25 +26,21 @@
                              (cycle [:runa-data :merchant-data])
                              (interleave (build-cns-cell-map runa) (build-cns-cell-map merch)))))
 
+;TODO: rename data to ds
 (defn sum-columns
-  "Reduce and return the money columns to the sum of their columns"
+  "Reduces selected columns to the sum of their columns and 
+   returns a hashmap of {cn sum-amount}"
   [data column-names]
-  (defn sum-column
-    [coll]
-    (reduce + coll))
   (let [data (ds/select-columns data column-names)]
-    (println "data in sum columns: " data)
-    (apply assoc {} (flatten (for [[key column] (I/to-map data)]
-                               (do (println "key &&&& column: " key column)
-                                   (println "column-names" column-names)
-                                   (println "(get col-names key)" (get column-names key))
-                                   [key (round2 1 (sum-column column))]))))))
+    (interleave column-names
+                (apply mapv
+                       (fn [& xs] (round2 1 (apply + xs)))
+                       (I/to-vect data)))))
 
 (defn make-report
   [sort-order]
   (let [merch (format-dataset (make-dataset merch-filename) sort-order)
         runa (format-dataset (make-dataset runa-filename) sort-order)
-        a (println "merch: " merch)
         b (println "runa: " runa)
         runa-summary (sum-columns runa (filter-column-names runa dollars-regex))
         d (println "runa-summary: " runa-summary)
@@ -52,15 +48,10 @@
         e (println "merch-summary: " merch-summary)
         orders (make-orders-format runa merch)
         f (println "orders: " orders)
-        g (println "orders class: " (class orders))
-        m {:summaries {:runa-summary runa-summary
-                       :merchant-summary merch-summary}
-           :orders orders}]
-    (println "m: " m)
-    m))
-    ;; {:summaries {:runa-summary runa-summary
-    ;;              :merchant-summary merch-summary}
-    ;;  :orders orders}))
+        g (println "orders class: " (class orders))]
+    {:summaries {:runa-summary runa-summary
+                 :merchant-summary merch-summary}
+     :orders orders}))
 
 (defn- parse-sort-order
   [string]
@@ -72,8 +63,6 @@
 ;TODO: rounding exactly has 1 decimal?
 (defn handler [req params]
   (let [[cn order] (parse-sort-order (get params "order_by"))]
-    (println "Param: " params)
-    (println "cn: " cn)
     (response (json/write-str (make-report [cn compare])))))
     ;; (println (make-report [cn compare]))))
       ;; (response (json/write-str (println (class (make-report [cn compare])))))))
