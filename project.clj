@@ -7,6 +7,7 @@
                  [ring-server "0.3.1"]
                  [camel-snake-kebab "0.3.2"]
                  [org.clojure/data.json "0.2.6"]
+                 [cheshire "5.5.0"]
                  [kindlychung/incanter-core "1.9.1-SNAPSHOT"]
                  ;testing
                  [clj-http "2.0.0"]

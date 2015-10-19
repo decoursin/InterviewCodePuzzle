@@ -4,25 +4,40 @@
   (:require [clj-http.client :as client]
             [ring.adapter.jetty :as jetty]
             [clojure.data.json :as json]
+            [clojure.pprint :refer [pprint]]
             [code-puzzle.handler :refer [staples-app]])
   (:import  [org.skyscreamer.jsonassert JSONAssert])) ;TODO: remove some of these
 
 
+(def ^:const port 3334)
+
 (use-fixtures
   :each
   (fn [f]
-    (let [server (jetty/run-jetty #'staples-app {:port 3333 :join? false})]
+    (let [server (jetty/run-jetty #'staples-app {:port port :join? false})]
+      ;; (println "server: " (str server))
       (try
         (f)
         (finally
           (.stop server))))))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest session-type-desc
+  (let [order-by "session-type-desc"
+        url (str "http://localhost:" port "/runatic/report?order_by=" order-by)
+        actual (json/read-str (:body (client/get url {:accepts :json})))
+        expected (json/read-str (slurp (str "expected." order-by ".json")))]
+    (is (= expected actual))))
 
-(deftest b-test
-   (let [actual (:body (client/get "http://localhost:3333/runatic/report"
-                                   {:accepts :json}))
-         expected (json/read-str (slurp "expected.session-type-desc.json"))]
+(deftest order-id-asc
+  (let [order-by "order-id-asc"
+        url (str "http://localhost:" port "/runatic/report?order_by=" order-by)
+        actual (json/read-str (:body (client/get url {:accepts :json})))
+        expected (json/read-str (slurp (str "expected." order-by ".json")))]
+    (is (= expected actual))))
+
+(deftest unit-price-dollars-asc
+  (let [order-by "unit-price-dollars-asc"
+        url (str "http://localhost:" port "/runatic/report?order_by=" order-by)
+        actual (json/read-str (:body (client/get url {:accepts :json})))
+        expected (json/read-str (slurp (str "expected." order-by ".json")))]
     (is (= expected actual))))

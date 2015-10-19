@@ -34,7 +34,11 @@
      (ds/rename-columns data m))))
 
 (defn- cns-cell-map-to-dataset
-  "Incanter API."
+  "Converts (matlab notation used below)    to  dataset
+   [{cn(1) cell(1,1), cn(2) cell(1,2), ..}      
+    {cn(1) cell(2,1), cn(2) cell(2,2), ..} 
+    {cn(1) cell(3,1), cn(2) cell(3,2), ..}
+    ....]"
   [cns-cell-map cns]
   (I/dataset cns
              (map (apply juxt (map (fn [cn] #(get % cn)) cns)) cns-cell-map)))
@@ -60,7 +64,6 @@
   [data [cn f]]
   (let [cns-cell-map (build-cns-cell-map data)
         sorted-cns-cell-map (sort-by #(get % cn) f cns-cell-map)]
-    (println "sorted-cns-cell-map: " sorted-cns-cell-map)
     (cns-cell-map-to-dataset sorted-cns-cell-map (ds/column-names data))))
 
 (defn format-dataset
@@ -72,7 +75,6 @@
                  (rename-columns cents-regex dollars-string)
                  (rename-columns ->kebab-case-string))]
     (let [not-cents-or-dollars-cns (filter-column-names data #(if (not (re-find cents-or-dollars-regex %)) %))]
-      (println "format-dataset: " data "sort-rder: " sort-order)
       (-> data
           (update-columns not-cents-or-dollars-cns s/lower-case)
           (sort-rows sort-order)))))

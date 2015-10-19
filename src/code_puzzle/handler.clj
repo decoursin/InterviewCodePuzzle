@@ -3,6 +3,7 @@
             [ring.middleware.reload :refer [wrap-reload]] ;TODO get rid of this?
             [ring.middleware.params :refer :all]
             [net.cgrand.moustache :refer [app]]
+            ;; [cheshire.core :as json]
             [clojure.data.json :as json]
             [clojure.string :as s]
             [incanter.core :as I]
@@ -28,10 +29,10 @@
    returns a hashmap of {cn sum-amount}"
   [data column-names]
   (let [data (ds/select-columns data column-names)]
-    (interleave column-names
+    (apply assoc {} (interleave column-names
                 (apply mapv
                        (fn [& xs] (round2 1 (apply + xs)))
-                       (I/to-vect data)))))
+                       (I/to-vect data))))))
 
 (defn make-report
   [sort-order]
@@ -54,6 +55,7 @@
 ;TODO: rounding exactly has 1 decimal?
 (defn handler [req params]
   (let [sort-order (parse-sort-order (get params "order_by"))]
+    ;; (response (json/generate-string (make-report sort-order)))))
     (response (json/write-str (make-report sort-order)))))
 
 (def staples-app (app wrap-reload ["runatic" "report"]
