@@ -4,9 +4,7 @@
             [clojure.core.matrix.dataset :as ds]
             [clojure.test :refer [function?]]
             [incanter.core :as I]
-            [camel-snake-kebab.core :refer [->kebab-case-string]];
-            :reload-all))
-;TODO: replace data with ds?
+            [camel-snake-kebab.core :refer [->kebab-case-string]]))
 
 (def ^:const cents-or-dollars-regex #"(?i)cents|dollars")
 (def ^:const cents-regex #"(?i)cents")
@@ -34,16 +32,20 @@
      (ds/rename-columns data m))))
 
 (defn- cns-cell-map-to-dataset
-  "Converts (matlab notation used below)    to  dataset
+  "Converts (matlab notation used below)    to dataset
    [{cn(1) cell(1,1), cn(2) cell(1,2), ..}      
-    {cn(1) cell(2,1), cn(2) cell(2,2), ..} 
+    {cn(1) cell(2,1), cn(2) cell(2,2), ..}  -> dataset
     {cn(1) cell(3,1), cn(2) cell(3,2), ..}
-    ....]"
+    ....]
+   (Parenthical note, this is the reverse to build-cns-cell-map)"
   [cns-cell-map cns]
   (I/dataset cns
              (map (apply juxt (map (fn [cn] #(get % cn)) cns)) cns-cell-map)))
 
 (defmulti sort-rows
+  "Sorts the rows of a dataset. Sorts according to one column and a 
+   compare function (the order argument). It can take an explicit
+   compare function or instead :asc or :desc keywords"
   (fn [data [cn order]]
     (cond
       (= order :asc) :asc
@@ -57,8 +59,8 @@
 
 (defmethod sort-rows :desc
   [data [cn _]]
-  (let [opp-compare (comp #(* -1 %) compare)]
-    (sort-rows data [cn opp-compare])))
+  (let [opposite-compare (comp #(* -1 %) compare)]
+    (sort-rows data [cn opposite-compare])))
 
 (defmethod sort-rows :function
   [data [cn f]]

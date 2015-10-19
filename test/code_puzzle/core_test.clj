@@ -1,13 +1,9 @@
 (ns code-puzzle.core-test
-  (:use clojure.test
-        code-puzzle.core)
-  (:require [clj-http.client :as client]
+  (:require [clojure.test :refer :all]
+            [clj-http.client :as client]
             [ring.adapter.jetty :as jetty]
             [clojure.data.json :as json]
-            [clojure.pprint :refer [pprint]]
-            [code-puzzle.handler :refer [staples-app]])
-  (:import  [org.skyscreamer.jsonassert JSONAssert])) ;TODO: remove some of these
-
+            [code-puzzle.handler :refer [staples-app]]))
 
 (def ^:const port 3334)
 
@@ -15,7 +11,6 @@
   :each
   (fn [f]
     (let [server (jetty/run-jetty #'staples-app {:port port :join? false})]
-      ;; (println "server: " (str server))
       (try
         (f)
         (finally

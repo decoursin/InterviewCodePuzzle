@@ -2,13 +2,8 @@
   (:require [clojure.core.matrix.dataset :as ds]
             [incanter.core :as I]))
 
-;;TODO: (map-reduce data column-names & fs)
-;;TODO: return map with :column-name value for each row then value
-;;TODO: (for :and)
-
-;; TODO: Use multimethod or protocol accept both column-names and data
 (defmulti filter-column-names
-  "Filters all the column names"
+  "Filters all of the column names"
   (fn [a b]
     [(cond
        ;; (= (type a) clojure.core.matrix.impl.dataset.Dataset) :dataset
@@ -50,7 +45,7 @@
 (defn build-cns-cell-map
   "For each cell of each column, produce a hashmap {column-name cell}.
    Voila, the name of the function reads, build {column-names cell} hashmap.
-   In my opinion, this should really be in the Incanter api"
+   (Parenthical note, this is the reverse to cns-cell-map-to-dataset)"
   [data]
   (let [rows (I/to-vect data)
         cns (ds/column-names data)]

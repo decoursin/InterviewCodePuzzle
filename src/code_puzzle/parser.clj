@@ -3,17 +3,14 @@
             [clojure.string :refer [split]]
             [code-puzzle.utils :refer :all]
             [incanter.core :as I]
-            [clojure.core.matrix.dataset :as ds]
-            :reload-all))
+            [clojure.core.matrix.dataset :as ds]))
 
-; Utilities
-; Left here for convenience
 (defn- get-extension
   [filename]
   (.substring filename (inc (.lastIndexOf filename "."))))
 
 (defn- get-delimeter
-  "Discovert the delimeter by the file extension"
+  "Determine the delimeter by the file extension of the filename"
   [filename]
   (let [ch (first (get-extension filename))]
     (cond
@@ -21,10 +18,8 @@
       (= ch \c) ","
       :else (throw (Exception. "filetype is not valid, expects .csv or .psv")))))
 
-;TODO: Test if slurp works instead
-; then, try to decouple opening the file from making the dataset
 (defn make-dataset
-  "Open the file and make into a dataset"
+  "Open the file and make it into and return a dataset"
   [filename]
   (with-open [rdr (reader filename)]
     (let [delim (re-pattern (get-delimeter filename))
